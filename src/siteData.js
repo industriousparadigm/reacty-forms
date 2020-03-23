@@ -5,7 +5,7 @@ const siteData = {
       name: 'name',
       text: 'What is your name?',
       type: 'text',
-      validationMessage: 'Name field must be 2-26 characters',
+      customValidationMessage: 'Name field must be 2-26 characters',
       customValidation: input => input.length > 2 && input.length <= 26
     },
     {
