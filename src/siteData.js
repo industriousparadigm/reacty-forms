@@ -5,13 +5,15 @@ const siteData = {
       name: 'name',
       text: 'What is your name?',
       type: 'text',
-      customValidationMessage: 'Name field must be 2-26 characters',
-      customValidation: input => input.length > 2 && input.length <= 26
+      validationMessage: 'Name field should be 2-26 characters',
+      validate: nameInput => nameRegex.test(nameInput)
     },
     {
       name: 'email',
       text: 'What is your email?',
-      type: 'email'
+      type: 'email',
+      validationMessage: 'Enter a valid email address',
+      validate: emailInput => emailRegex.test(emailInput)
     },
     {
       name: 'genre',
@@ -27,5 +29,9 @@ const siteData = {
   ],
   defaultValidationMessage: 'Bad format, review input'
 }
+
+const nameRegex = /^[A-Za-z]{2,26}$/
+//eslint-disable-next-line
+const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/
 
 export default siteData
