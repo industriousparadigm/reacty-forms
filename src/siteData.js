@@ -20,14 +20,18 @@ const siteData = {
       text: 'What is your favourite movie genre?',
       type: 'select',
       options: [
+        '',
         'spaghetti western',
         '40s noir',
         'slasher horror',
         'wes anderson'
-      ]
+      ],
+      validationMessage: 'Choose a genre',
+      validate: genreOption => !!genreOption
     }
   ],
-  defaultValidationMessage: 'Bad format, review input'
+  defaultValidationMessage: 'Bad format, review input',
+  globalValidationMessage: 'Please review the items marked in red'
 }
 
 const nameRegex = /^[A-Za-z]{2,26}$/

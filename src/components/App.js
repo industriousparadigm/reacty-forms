@@ -4,6 +4,7 @@ import Header from './Header'
 import siteData from '../siteData'
 import Answers from './Answers'
 import Questions from './Questions'
+import Navigation from './Navigation'
 
 const buildInitialFormData = () =>
   siteData.questions.map(question => ({
@@ -15,10 +16,11 @@ const App = () => {
   const [formData, setFormData] = useState(buildInitialFormData())
   const [currentQuestion, goToQuestion] = useState(0)
   const [showAnswers, toggleAnswers] = useState(false)
+  const [showEndScreen, toggleEnd] = useState(false)
 
   const { questions } = siteData
 
-  const handleSubmit = value => {
+  const handleSave = value => {
     let updatedFormData = formData
     updatedFormData[currentQuestion] = { ...formData[currentQuestion], value }
     setFormData(updatedFormData)
@@ -42,6 +44,12 @@ const App = () => {
     // show summary if no more questions
     isLastQuestion() ? toggleAnswers(true) : goToQuestion(currentQuestion + 1)
 
+  const handleDone = () => {
+    // check if all answers are good
+    // go to final screen
+    toggleEnd(true)
+  }
+
   const isLastQuestion = () => currentQuestion + 1 >= questions.length
   const isFirstQuestion = () => currentQuestion === 0
 
@@ -49,33 +57,29 @@ const App = () => {
     <div className='App'>
       <Header />
       <div className='App-content'>
-        {showAnswers ? (
-          <Answers formData={formData} handleEdit={handleEdit} />
+        {showEndScreen ? (
+          <h2>the end</h2>
+        ) : showAnswers ? (
+          <Answers
+            formData={formData}
+            handleEdit={handleEdit}
+            handlePrev={handlePrev}
+            handleDone={handleDone}
+          />
         ) : (
           <Questions
             formData={formData}
             currentQuestion={currentQuestion}
-            handleSubmit={handleSubmit}
+            handleSave={handleSave}
           />
         )}
         {!showAnswers && (
-          <>
-            <button className='btn btn-small btn-prev' onClick={handlePrev}>
-              Previous
-            </button>
-            <button className='btn btn-small btn-next' onClick={handleNext}>
-              Next
-            </button>
-          </>
+          <Navigation
+            handlePrev={handlePrev}
+            handleNext={handleNext}
+            handleViewAnswers={() => toggleAnswers(true)}
+          />
         )}
-        <button
-          className='btn btn-small btn-summary'
-          onClick={() => {
-            showAnswers ? handlePrev() : toggleAnswers(true)
-          }}
-        >
-          {showAnswers ? 'Back' : 'View answers'}
-        </button>
       </div>
     </div>
   )
