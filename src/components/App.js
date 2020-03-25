@@ -13,35 +13,34 @@ const buildInitialFormData = () =>
 
 const App = () => {
   const [formData, setFormData] = useState(buildInitialFormData())
-  const [currentQuestion, cycleQuestion] = useState(0)
+  const [currentQuestion, goToQuestion] = useState(0)
   const [showAnswers, toggleAnswers] = useState(false)
 
   const { questions } = siteData
 
-  const handleSubmit = (value, index) => {
+  const handleSubmit = value => {
     let updatedFormData = formData
-    updatedFormData[index] = { question: questions[currentQuestion], value }
+    updatedFormData[currentQuestion] = { ...formData[currentQuestion], value }
     setFormData(updatedFormData)
-    console.log(updatedFormData)
     handleNext()
   }
 
   const handleEdit = questionIndex => {
     // set currentQuestion to the relevant one and take answers away
-    cycleQuestion(questionIndex)
+    goToQuestion(questionIndex)
     toggleAnswers(false)
   }
 
   const handlePrev = () => {
-    // if currently viewing summary just go back to current Q
+    // if currently viewing summary go back to current Q
     showAnswers
       ? toggleAnswers(false)
-      : !isFirstQuestion() && cycleQuestion(currentQuestion - 1)
+      : !isFirstQuestion() && goToQuestion(currentQuestion - 1)
   }
 
   const handleNext = () =>
-    // just show summary if no more questions
-    isLastQuestion() ? toggleAnswers(true) : cycleQuestion(currentQuestion + 1)
+    // show summary if no more questions
+    isLastQuestion() ? toggleAnswers(true) : goToQuestion(currentQuestion + 1)
 
   const isLastQuestion = () => currentQuestion + 1 >= questions.length
   const isFirstQuestion = () => currentQuestion === 0

@@ -1,10 +1,20 @@
 import React, { useState } from 'react'
 
-const TextInput = ({ index, question, visible, handleSubmit, value }) => {
+const TextInput = ({ question, visible, handleSubmit, value }) => {
   const [answer, setAnswer] = useState(value)
   const [showValidationMessage, toggleValidationMessage] = useState(false)
 
   const { name, text, type, validationMessage, validate } = question
+
+  const onSubmit = e => {
+    e.preventDefault()
+    if (validate(answer)) {
+      toggleValidationMessage(false)
+      handleSubmit(answer)
+    } else {
+      toggleValidationMessage(true)
+    }
+  }
 
   return (
     visible && (
@@ -20,18 +30,7 @@ const TextInput = ({ index, question, visible, handleSubmit, value }) => {
         {showValidationMessage && (
           <p className='validation-message'>{validationMessage}</p>
         )}
-        <button
-          className='btn btn-submit'
-          onClick={e => {
-            e.preventDefault()
-            if (validate(answer)) {
-              toggleValidationMessage(false)
-              handleSubmit(answer, index)
-            } else {
-              toggleValidationMessage(true)
-            }
-          }}
-        >
+        <button className='btn btn-submit' onClick={onSubmit}>
           Submit
         </button>
       </>

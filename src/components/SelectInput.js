@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 
-const SelectInput = ({ index, question, visible, handleSubmit, value }) => {
+const SelectInput = ({ question, visible, handleSubmit, value }) => {
   const [answer, setAnswer] = useState(value)
-  const [showValidationMessage, toggleValidationMessage] = useState(false)
 
   const { name, text, options } = question
 
   const onSubmit = e => {
     e.preventDefault()
-    handleSubmit(answer, index)
+    handleSubmit(answer)
   }
 
   return (
